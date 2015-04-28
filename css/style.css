@@ -1,0 +1,52 @@
+div#wrapper {
+  max-width: 701px;
+  margin: auto;
+  padding: 20px;
+  background: #E6E6E6;
+  border-radius: 5px;
+}
+
+#wrapper h1 {
+  font-family: Arial, sans-serif;
+  color: #888888;
+  font-weight: 300;
+  text-align: center;
+}
+
+#wrapper h2 {
+  font-family: arial, sans-serif;
+  color: #BABABA;
+  font-weight: 100;
+  text-align: center;
+}
+
+ul#content {
+  width: 500px;
+  margin: auto;
+  padding-top: 30px;
+}
+
+#content li {
+  list-style-type: none;
+  margin: 5px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 5px;
+  max-width: 500px;
+  position: relative;
+  min-height: 50px;
+}
+
+#content li img {
+  border-radius: 50%;
+  border: 3px solid #83D284;
+  display: inline-block;
+  float: left;
+  margin-right: 20px;
+}
+
+span.tweet-date {
+  display: block;
+  font-size: .8rem;
+  font-style: italic;
+}
