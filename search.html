@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<title>Twitter</title>
+<meta charset="utf-8">
+<script>
+// Your JavaScript code will go here
+
+window.onload = function() {
+    // set up the click handler for the form button
+    geoFindMe();
+    var button = document.getElementById("submit");
+    button.onclick = getTweets;
+}
+
+// when you click "Get Tweets" we call this function
+function getTweets() {
+    // set up a new XHR request
+    var xhr = new XMLHttpRequest();
+    // we're calling search.php and passing in a query string
+    var url = "search.php?query=";
+    var query = document.getElementById("query").value;
+    if (!query) {
+        query = "40.711665,-74.013475,.1mi";
+    }
+    // we encode the query to handle any special characters properly
+    url += encodeURIComponent(query);
+
+    // this is the function that is called when the XHR request
+    // to our search.php script is handled, and a response sent back
+    xhr.onload = function() {
+        // if everything went okay, then send the response data
+        // to the displayTweets() function
+        if (xhr.status == 200) {
+            displayTweets(xhr.responseText);
+        } else {
+            var errorDiv = document.getElementById("error");
+            errorDiv.innerHTML = "Error getting tweets: " + xhr.status;
+        }
+    };
+    // make the request!
+    xhr.open("GET", url);
+    xhr.send(null);
+}
+
+function displayTweets(tweets) {
+    // tweets is a big long string, so we need to parse it 
+    // into JSON first
+    tweets = JSON.parse(tweets);
+    var ul = document.querySelector("ul");
+    // clear existing tweets from list
+    while (ul.hasChildNodes()) {
+        ul.removeChild(ul.lastChild);
+    }
+    // add new tweets
+    for (var i = 0; i < tweets.length; i++) {
+        var li = document.createElement("li");
+        li.innerHTML = tweets[i].tweet;
+        ul.appendChild(li);
+    }
+}
+
+function geoFindMe() {
+  var output = document.getElementById("map");
+
+  if (!navigator.geolocation){
+    output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+    return;
+  }
+
+  function success(position) {
+    var latitude  = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+    var currentLocation = latitude + ',' + longitude + ',.2mi';
+    document.getElementById('query').value = currentLocation;
+
+    var img = new Image();
+    img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+
+    output.appendChild(img);
+  };
+
+  function error() {
+    output.innerHTML = "Unable to retrieve your location";
+  };
+
+  output.innerHTML = "<p>Locating…</p>";
+
+  navigator.geolocation.getCurrentPosition(success, error);
+}
+
+</script>
+</head>
+<body>
+<form>
+    <input type="text" id="query">
+    <input type="button" id="submit" value="Get Tweets">
+</form>
+<div id="map"></div>
+<div id="error"></div>
+<ul id="content"></ul>
+</body>
+</html>

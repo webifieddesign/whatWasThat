@@ -50,3 +50,7 @@ span.tweet-date {
   font-size: .8rem;
   font-style: italic;
 }
+
+input#query {
+  display: none;
+}
